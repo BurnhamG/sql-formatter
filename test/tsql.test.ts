@@ -58,4 +58,23 @@ describe('TSqlFormatter', () => {
         CROSS JOIN t2 on t.id = t2.id_t
     `);
   });
+  
+   it('formats multiple queries with GO between them', () => {
+    const result = format('SELECT a, b FROM t CROSS JOIN t2 on t.id = t2.id_t; GO SELECT c,d FROM e;');
+    expect(result).toBe(dedent`
+      SELECT
+        a,
+        b
+      FROM
+        t
+        CROSS JOIN t2 on t.id = t2.id_t;
+      GO
+
+      SELECT
+        c,
+        d
+      FROM
+        e;
+    `);
+  });
 });
